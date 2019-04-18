@@ -2,102 +2,20 @@
 
 use strict;
 use ExtUtils::MakeMaker;
+
+open( my $fh,'<','cpanfile' )
+    || die "Couldn't open cpanfile to get deps: $!";
+
+my @deps = map { ( split( /'/,$_ ) )[1]; } <$fh>;
+close( $fh );
+
 WriteMakefile(
               NAME          => 'PAUSE',
               VERSION_FROM  => 'lib/PAUSE.pm',
               ABSTRACT_FROM => 'lib/PAUSE.pod',
               AUTHOR        => 'Andreas Koenig <andreas.koenig.7os6VVqR@franz.ak.mind.de>',
               LICENSE       => 'perl',
-              PREREQ_PM     => { map +($_ => 0), qw(
-    Apache::Session::Counted
-    BSD::Resource
-    Capture::Tiny
-    CPAN::Checksums
-    CPAN::DistnameInfo
-    CPAN::Indexer::Mirror
-    Class::MOP::Class
-    Class::Singleton
-    Compress::Zlib
-    Crypt::Eksblowfish::Bcrypt
-    Cwd
-    DB_File
-    DBD::mysql
-    DBD::SQLite
-    DBI
-    DBIx::RunSQL
-    Devel::Peek
-    Dumpvalue
-    Email::Address
-    Email::MIME
-    Email::Sender::Simple
-    EV
-    File::Copy::Recursive
-    File::pushd
-    File::Rsync::Mirror::Recentfile
-    File::Temp
-    File::Which
-    Git::Wrapper
-    HTML::Entities
-    HTTP::Date
-    HTTP::Request::Common
-    HTTP::Tiny
-    IO::Socket::SSL
-    IPC::Cmd
-    IPC::Run3
-    JSON::XS
-    Log::Dispatch
-    Log::Dispatch::Config
-    LWP::UserAgent
-    LWP::Protocol::https
-    Digest::MD5
-    Digest::SHA1
-    Mail::Mailer
-    Mail::Send
-    Module::Faker::Dist
-    Module::Signature
-    Moo
-    Mojolicious
-    Mojolicious::Plugin::WithCSRFProtection
-    MojoX::Log::Dispatch::Simple
-    MooseX::StrictConstructor
-    Net::FTP
-    Net::SSLeay
-    Parse::CPAN::Packages
-    Parse::CPAN::Perms
-    Path::Class
-    Path::Tiny
-    Plack
-    Plack::App::Directory::Apaxy
-    Plack::Middleware::Auth::Basic
-    Plack::Middleware::ReverseProxy
-    Plack::Middleware::ServerStatus::Tiny
-    Set::Crontab
-    SQL::Maker
-    String::Random
-    Test::Class
-    Test::Deep
-    Test::FITesque::Fixture
-    Test::MockObject
-    Test::mysqld
-    Test::WWW::Mechanize::PSGI
-    Text::Format
-    Text::Markdown::Hoedown
-    Text::Metaphone
-    Text::Soundex
-    Text::Unidecode
-    Time::Duration
-    Time::HiRes
-    URI::Escape
-    URI::URL
-    Unicode::Collate
-    Unicode::String
-    WWW::Mechanize::Boilerplate
-    XML::LibXML
-    XML::Parser
-    XML::SAX::Base
-    XML::SAX::Writer
-    YAML::XS
-)},
+              PREREQ_PM     => { map +($_ => 0), @deps },
               SIGN => 1,
               test => { RECURSIVE_TEST_FILES => 1 },
               ($ExtUtils::MakeMaker::VERSION >= 6.4502 ?
