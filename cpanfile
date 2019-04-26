@@ -33,6 +33,7 @@ requires 'Module::Signature';
 requires 'MojoX::Log::Dispatch::Simple';
 requires 'Mojolicious';
 requires 'Mojolicious::Plugin::WithCSRFProtection';
+requires 'Mojolicious::Plugin::OAuth2::Server';
 requires 'Net::SSLeay', '1.49';
 requires 'Parse::CPAN::Packages';
 requires 'Parse::CPAN::Perms';
