@@ -1,4 +1,4 @@
-package PAUSE::Web::Controller::Api::User;
+package PAUSE::API::Controller::User;
 
 use Mojo::Base "Mojolicious::Controller";
 use HTTP::Status qw/:constants status_message/;

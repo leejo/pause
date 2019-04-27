@@ -1,4 +1,4 @@
-package PAUSE::Web::Plugin::OAuth2Server;
+package PAUSE::API::Plugin::OAuth2Server;
 
 use Mojo::Base "Mojolicious::Plugin";
 use YAML::Syck;
@@ -11,7 +11,7 @@ sub register {
     'OAuth2::Server' => {
       # authorize route falls under /authenquery to make sure user
       # is logged in or is asked to log in
-      authorize_route      => '/authenquery/oauth/authorize',
+      authorize_route      => '/oauth/authorize',
 
       # access token route doesn't fall under /authenquery as it will
       # use the oauth2 auth code and client secret for authentication

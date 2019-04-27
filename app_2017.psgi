@@ -17,6 +17,7 @@ use PAUSE::Web::Context;
 use PAUSE::Web;
 use PAUSE::Web::App::Index;
 use PAUSE::Web::App::Disabled;
+use PAUSE::API;
 
 my $context = PAUSE::Web::Context->new(root => $AppRoot);
 $context->init;
@@ -30,6 +31,7 @@ BSD::Resource::setrlimit(BSD::Resource::RLIMIT_CORE(),
                          40*1024*1024, 40*1024*1024);
 
 my $pause_app = PAUSE::Web->new(pause => $context);
+my $pause_api = PAUSE::API->new(pause => $context);
 my $index_app = PAUSE::Web::App::Index->new->to_app;
 my $disabled_app = PAUSE::Web::App::Disabled->new->to_app;
 
@@ -59,6 +61,11 @@ builder {
     mount '/pause' => builder {
         enable_if {$_[0]->{PATH_INFO} =~ /authenquery/ ? 1 : 0} '+PAUSE::Web::Middleware::Auth::Basic', context => $context;
         $pause_app->start('psgi');
+    };
+
+    mount '/api' => builder {
+        enable_if {$_[0]->{PATH_INFO} =~ /authorize/ ? 1 : 0} '+PAUSE::Web::Middleware::Auth::Basic', context => $context;
+        $pause_api->start('psgi');
     };
 
     mount '/' => builder { $index_app };

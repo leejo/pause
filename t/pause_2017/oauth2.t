@@ -21,7 +21,7 @@ $t->{mech}->requests_redirectable( [] );
 subtest 'unknown client' => sub {
 
   my $res = $t->get(
-    "/pause/authenquery/oauth/authorize"
+    "/api/oauth/authorize"
     . "?client_id=bad_client_id"
     . "&$common_qparams"
   );
@@ -38,7 +38,7 @@ my $access_token;
 subtest 'known client' => sub {
 
   my $res = $t->get(
-    "/pause/authenquery/oauth/authorize"
+    "/api/oauth/authorize"
     . "?client_id=ACT"
     . "&$common_qparams"
   );
@@ -52,7 +52,7 @@ subtest 'known client' => sub {
   my $auth_code = ( split( 'code=',$res->header( 'location' ) ) )[1];
 
   $res = $t->post_ok(
-    "/pause/oauth/access_token",
+    "/api/oauth/access_token",
     {
       code => $auth_code,
       client_id => 'ACT',
@@ -80,7 +80,7 @@ subtest 'get user info' => sub {
 
   $t->{mech}->requests_redirectable( [] );
   my $res = $t->get(
-    "/pause/api/me",
+    "/api/me",
     Authorization => "Bearer $access_token",
   );
 

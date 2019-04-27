@@ -87,26 +87,6 @@ sub startup {
     }
   }
 
-  # note that we define the /oauth/authorize route before we install
-  # the plugin to avoid it defining it first (FIFO) - we use the same
-  # route in the plugin setup to avoid it defining an alternate route
-  $private->get("/oauth/authorize")->to("api-user#oauth_authorize");
-  $app->plugin("PAUSE::Web::Plugin::OAuth2Server");
-
-  # API/OAuth2
-  my $api = $app->routes->under("/api")->to(
-    cb => sub {
-      my ( $c ) = @_;
-      return 1 if $c->oauth;
-      $c->render(
-        status => HTTP_UNAUTHORIZED,
-        json   => { error => 'Bad credentials' },
-      );
-      return;
-    }
-  );
-
-  $api->get("/me")->to("api-user#me");
 }
 
 sub _log {
