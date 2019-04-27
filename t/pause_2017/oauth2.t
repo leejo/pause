@@ -18,6 +18,16 @@ my $t = Test::PAUSE::Web->new(user => $user);
 # automatic handling of them so we can inspect the redirect
 $t->{mech}->requests_redirectable( [] );
 
+subtest 'bad request' => sub {
+
+  my $res = $t->get( "/api/oauth/authorize" );
+  cmp_deeply(
+    my $json = decode_json( $res->content ),
+    { error => "Bad request" },
+    'JSON content',
+  );
+};
+
 subtest 'unknown client' => sub {
 
   my $res = $t->get(

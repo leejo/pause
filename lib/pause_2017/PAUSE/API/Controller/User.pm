@@ -46,7 +46,10 @@ sub oauth_authorize {
   my $error = "Failed to generate a redirect_uri for oauth_authorize";
   $c->app->pause->log({level => 'error', message => $error });
   $c->res->code(HTTP_INTERNAL_SERVER_ERROR);
-  return $c->reply->exception($error);
+  return $c->render(
+    status => HTTP_BAD_REQUEST,
+    json => { error => "Bad request" },
+  )
 }
 
 1;
